@@ -13,7 +13,7 @@ To see how to make this your own, look here:
 [README](https://openapi-generator.tech)
 
 - API version: 0.0.0
-- Build date: 2022-01-27T15:06:19.792249Z[Europe/London]
+- Build date: 2022-01-27T17:29:20.781411Z[Europe/London]
 
 
 ### Running the server
@@ -32,4 +32,3 @@ Once image is built use
 ```
 docker run --rm -it openapi
 ```
-# openapi_callback

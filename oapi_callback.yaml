@@ -6,6 +6,7 @@ paths:
   /callback:
     post:
       summary: Subscribe to a webhook
+      operationId: callback
       requestBody:
         required: true
         content:
@@ -13,38 +14,33 @@ paths:
             schema:
               type: object
               properties:
-                callbackUrl:   # Callback URL
+                callbackUrl: # Callback URL
                   type: string
                   format: uri
                   example: https://myserver.com/send/callback/here
-                eventData:
-                  type: object
-                  properties:
-                    eventType:
-                      type: string
-                    eventId:
-                      type: string
-                    eventSource:
-                      type: string
-                  required: 
-                    - eventType
-                    - eventId
-                    - eventSource
+                eventType:
+                  type: string
+                eventId:
+                  type: string
+                eventSource:
+                  type: string
                 workflowData:
                   type: object
               required:
                 - callbackUrl
-                - eventData
+                - eventType
+                - eventId
+                - eventSource
                 - workflowData
       responses:
-        '201':
+        "201":
           description: Webhook created
-      callbacks:   # Callback definition
-        myEvent:   # Event name
-          '{$request.body#/callbackUrl}':   # The callback URL,
-                                            # Refers to the passed URL
+      callbacks: # Callback definition
+        myEvent: # Event name
+          "{$request.body#/callbackUrl}": # The callback URL,
+            # Refers to the passed URL
             post:
-              requestBody:   # Contents of the callback message
+              requestBody: # Contents of the callback message
                 required: true
                 content:
                   application/json:
@@ -56,6 +52,6 @@ paths:
                           example: Some event happened
                       required:
                         - message
-              responses:   # Expected responses to the callback message
-                '200':
+              responses: # Expected responses to the callback message
+                "200":
                   description: Your server returns this code if it accepts the callback

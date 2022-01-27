@@ -17,7 +17,7 @@ import (
 
 // DefaultApiController binds http requests to an api service and writes the service results to the http response
 type DefaultApiController struct {
-	service DefaultApiServicer
+	service      DefaultApiServicer
 	errorHandler ErrorHandler
 }
 
@@ -47,18 +47,18 @@ func NewDefaultApiController(s DefaultApiServicer, opts ...DefaultApiOption) Rou
 
 // Routes returns all of the api route for the DefaultApiController
 func (c *DefaultApiController) Routes() Routes {
-	return Routes{ 
+	return Routes{
 		{
-			"CallbackPost",
+			"Callback",
 			strings.ToUpper("Post"),
 			"/callback",
-			c.CallbackPost,
+			c.Callback,
 		},
 	}
 }
 
-// CallbackPost - Subscribe to a webhook
-func (c *DefaultApiController) CallbackPost(w http.ResponseWriter, r *http.Request) {
+// Callback - Subscribe to a webhook
+func (c *DefaultApiController) Callback(w http.ResponseWriter, r *http.Request) {
 	inlineObjectParam := InlineObject{}
 	d := json.NewDecoder(r.Body)
 	d.DisallowUnknownFields()
@@ -70,7 +70,7 @@ func (c *DefaultApiController) CallbackPost(w http.ResponseWriter, r *http.Reque
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	result, err := c.service.CallbackPost(r.Context(), inlineObjectParam)
+	result, err := c.service.Callback(r.Context(), inlineObjectParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

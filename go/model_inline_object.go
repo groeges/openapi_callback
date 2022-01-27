@@ -13,7 +13,11 @@ type InlineObject struct {
 
 	CallbackUrl string `json:"callbackUrl"`
 
-	EventData CallbackEventData `json:"eventData"`
+	EventType string `json:"eventType"`
+
+	EventId string `json:"eventId"`
+
+	EventSource string `json:"eventSource"`
 
 	WorkflowData map[string]interface{} `json:"workflowData"`
 }
@@ -22,7 +26,9 @@ type InlineObject struct {
 func AssertInlineObjectRequired(obj InlineObject) error {
 	elements := map[string]interface{}{
 		"callbackUrl": obj.CallbackUrl,
-		"eventData": obj.EventData,
+		"eventType": obj.EventType,
+		"eventId": obj.EventId,
+		"eventSource": obj.EventSource,
 		"workflowData": obj.WorkflowData,
 	}
 	for name, el := range elements {
@@ -31,9 +37,6 @@ func AssertInlineObjectRequired(obj InlineObject) error {
 		}
 	}
 
-	if err := AssertCallbackEventDataRequired(obj.EventData); err != nil {
-		return err
-	}
 	return nil
 }
 

@@ -30,14 +30,14 @@ func NewDefaultApiService() DefaultApiServicer {
 	return &DefaultApiService{}
 }
 
-// CallbackPost - Subscribe to a webhook
-func (s *DefaultApiService) CallbackPost(ctx context.Context, inlineObject InlineObject) (ImplResponse, error) {
+// Callback - Subscribe to a webhook
+func (s *DefaultApiService) Callback(ctx context.Context, inlineObject InlineObject) (ImplResponse, error) {
 	// TODO - update CallbackPost with the required logic for this service method.
 	// Add api_default_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 	done := make(chan bool)
 
 	go func() {
-		sendEvent(done, inlineObject.EventData.EventId, inlineObject.CallbackUrl)
+		sendEvent(done, inlineObject.EventId, inlineObject.CallbackUrl)
 	}()
 
 	//TODO: Uncomment the next line to return response Response(201, {}) or use other options such as http.Ok ...

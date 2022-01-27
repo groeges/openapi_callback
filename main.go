@@ -13,7 +13,7 @@ import (
 	"log"
 	"net/http"
 
-	openapi "github.com/groeges/openapi_callback/go"
+	openapi "github.com/GIT_USER_ID/GIT_REPO_ID/go"
 )
 
 func main() {

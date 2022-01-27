@@ -29,6 +29,7 @@ paths:
                 "200":
                   description: Your server returns this code if it accepts the callback
               x-callback-request: true
+      operationId: callback
       requestBody:
         $ref: '#/components/requestBodies/inline_object'
         content:
@@ -39,13 +40,19 @@ paths:
                   example: https://myserver.com/send/callback/here
                   format: uri
                   type: string
-                eventData:
-                  $ref: '#/components/schemas/_callback_eventData'
+                eventType:
+                  type: string
+                eventId:
+                  type: string
+                eventSource:
+                  type: string
                 workflowData:
                   type: object
               required:
               - callbackUrl
-              - eventData
+              - eventId
+              - eventSource
+              - eventType
               - workflowData
               type: object
         required: true
@@ -76,31 +83,24 @@ components:
       required:
       - message
       type: object
-    _callback_eventData:
-      properties:
-        eventType:
-          type: string
-        eventId:
-          type: string
-        eventSource:
-          type: string
-      required:
-      - eventId
-      - eventSource
-      - eventType
-      type: object
     inline_object:
       properties:
         callbackUrl:
           example: https://myserver.com/send/callback/here
           format: uri
           type: string
-        eventData:
-          $ref: '#/components/schemas/_callback_eventData'
+        eventType:
+          type: string
+        eventId:
+          type: string
+        eventSource:
+          type: string
         workflowData:
           type: object
       required:
       - callbackUrl
-      - eventData
+      - eventId
+      - eventSource
+      - eventType
       - workflowData
       type: object
