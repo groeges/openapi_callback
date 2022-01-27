@@ -1,0 +1,4 @@
+FROM scratch AS runtime
+COPY ./openapi ./
+EXPOSE 8080/tcp
+ENTRYPOINT ["./openapi"]
