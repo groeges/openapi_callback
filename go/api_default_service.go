@@ -34,6 +34,13 @@ func NewDefaultApiService() DefaultApiServicer {
 func (s *DefaultApiService) Callback(ctx context.Context, inlineObject InlineObject) (ImplResponse, error) {
 	// TODO - update CallbackPost with the required logic for this service method.
 	// Add api_default_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
+	out, err := json.Marshal(inlineObject)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(string(out))
+
 	done := make(chan bool)
 
 	go func() {
