@@ -1,0 +1,61 @@
+openapi: 3.0.0
+info:
+  version: 0.0.0
+  title: test
+paths:
+  /callback:
+    post:
+      summary: Subscribe to a webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                callbackUrl:   # Callback URL
+                  type: string
+                  format: uri
+                  example: https://myserver.com/send/callback/here
+                eventData:
+                  type: object
+                  properties:
+                    eventType:
+                      type: string
+                    eventId:
+                      type: string
+                    eventSource:
+                      type: string
+                  required: 
+                    - eventType
+                    - eventId
+                    - eventSource
+                workflowData:
+                  type: object
+              required:
+                - callbackUrl
+                - eventData
+                - workflowData
+      responses:
+        '201':
+          description: Webhook created
+      callbacks:   # Callback definition
+        myEvent:   # Event name
+          '{$request.body#/callbackUrl}':   # The callback URL,
+                                            # Refers to the passed URL
+            post:
+              requestBody:   # Contents of the callback message
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                          example: Some event happened
+                      required:
+                        - message
+              responses:   # Expected responses to the callback message
+                '200':
+                  description: Your server returns this code if it accepts the callback
