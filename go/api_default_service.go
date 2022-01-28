@@ -62,7 +62,7 @@ func sendEvent(done chan<- bool, eventId string, callbackURL string) (okay bool)
 
 	time.Sleep(20 * time.Second)
 
-	values := map[string]string{"move": true, "message": fmt.Sprintf("Remote process has completed for eventId: %s", eventId)}
+	values := map[string]string{"move": "true", "message": fmt.Sprintf("Remote process has completed for eventId: %s", eventId)}
 	json_data, err := json.Marshal(values)
 
 	if err != nil {
