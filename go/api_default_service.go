@@ -71,6 +71,7 @@ func sendEvent(done chan<- bool, eventId string, callbackURL string) (okay bool)
 
 	req, err := http.NewRequest("POST", callbackURL, bytes.NewBuffer(json_data))
 
+	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("ce-specversion", "1.0")
 	req.Header.Add("ce-source", "pm")
 	req.Header.Add("ce-type", "move")
@@ -80,11 +81,12 @@ func sendEvent(done chan<- bool, eventId string, callbackURL string) (okay bool)
 	resp, err := http.DefaultClient.Do(req)
 
 	fmt.Println(fmt.Sprintf("Response from request is: %d", resp.StatusCode))
-	if err != nil {
-		fmt.Println(fmt.Sprintf("%s: Successfully sent event", eventId))
-		return false
-	} else {
-		fmt.Println(fmt.Sprintf("%s: Failed to send event: %v", eventId, err))
-		return true
-	}
+	// if err != nil {
+	// 	fmt.Println(fmt.Sprintf("%s: Successfully sent event", eventId))
+	// 	return false
+	// } else {
+	// 	fmt.Println(fmt.Sprintf("%s: Failed to send event: %v", eventId, err))
+	// 	return true
+	// }
+	return true
 }
