@@ -62,7 +62,7 @@ func sendEvent(done chan<- bool, eventId string, callbackURL string) (okay bool)
 
 	time.Sleep(20 * time.Second)
 
-	values := map[string]string{"message": fmt.Sprintf("Remote process has completed for eventId: %s", eventId)}
+	values := map[string]string{"move", true, "message": fmt.Sprintf("Remote process has completed for eventId: %s", eventId)}
 	json_data, err := json.Marshal(values)
 
 	if err != nil {
@@ -81,12 +81,6 @@ func sendEvent(done chan<- bool, eventId string, callbackURL string) (okay bool)
 	resp, err := http.DefaultClient.Do(req)
 
 	fmt.Println(fmt.Sprintf("Response from request is: %d", resp.StatusCode))
-	// if err != nil {
-	// 	fmt.Println(fmt.Sprintf("%s: Successfully sent event", eventId))
-	// 	return false
-	// } else {
-	// 	fmt.Println(fmt.Sprintf("%s: Failed to send event: %v", eventId, err))
-	// 	return true
-	// }
+
 	return true
 }
