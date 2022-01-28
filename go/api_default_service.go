@@ -39,7 +39,7 @@ func (s *DefaultApiService) Callback(ctx context.Context, inlineObject InlineObj
 		panic(err)
 	}
 
-	fmt.Println(string(out))
+	fmt.Println("Input data: " + string(out))
 
 	done := make(chan bool)
 
