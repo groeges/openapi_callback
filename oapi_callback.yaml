@@ -14,44 +14,62 @@ paths:
             schema:
               type: object
               properties:
-                callbackUrl: # Callback URL
+                callbackUrl:   # Callback URL
                   type: string
                   format: uri
                   example: https://myserver.com/send/callback/here
                 eventType:
                   type: string
-                eventId:
+                processId:
                   type: string
                 eventSource:
                   type: string
-                workflowData:
+                data:
                   type: object
               required:
                 - callbackUrl
                 - eventType
-                - eventId
+                - processId
                 - eventSource
-                - workflowData
       responses:
-        "201":
+        '201':
           description: Webhook created
-      callbacks: # Callback definition
-        myEvent: # Event name
-          "{$request.body#/callbackUrl}": # The callback URL,
-            # Refers to the passed URL
+      callbacks:   # Callback definition
+        myEvent:   # Event name
+          '{$request.body#/callbackUrl}':   # The callback URL,
+                                            # Refers to the passed URL
             post:
-              requestBody: # Contents of the callback message
+              requestBody:   # Contents of the callback message
                 required: true
                 content:
                   application/json:
                     schema:
                       type: object
-                      properties:
-                        message:
-                          type: string
-                          example: Some event happened
-                      required:
-                        - message
-              responses: # Expected responses to the callback message
-                "200":
+              responses:   # Expected responses to the callback message
+                '200':
                   description: Your server returns this code if it accepts the callback
+                  headers:
+                    ce-kogitoprocrefid:
+                      schema:
+                        type: string
+                      description: The processId for the workflow process.
+                    ce-specversion:
+                      schema:
+                        type: string
+                        example: "1.0"
+                      description: The version of the cloud event specification being used
+                    ce-source:
+                      schema: 
+                        type: string
+                        example: "pm"
+                      description: The source of the cloud event - as passed in the request body as `eventSource`
+                    ce-type:
+                      schema: 
+                        type: string
+                        example: "move"
+                      description: The type of the cloud event  - as passed in the request body as `eventType`
+                    ce-id:
+                      schema: 
+                        type: string
+                        example: "random"
+                      description: The id for this cloud event 

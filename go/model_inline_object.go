@@ -19,7 +19,7 @@ type InlineObject struct {
 
 	EventSource string `json:"eventSource"`
 
-	WorkflowData map[string]interface{} `json:"workflowData"`
+	Data map[string]interface{} `json:"data"`
 }
 
 // AssertInlineObjectRequired checks if the required fields are not zero-ed
@@ -29,7 +29,7 @@ func AssertInlineObjectRequired(obj InlineObject) error {
 		"eventType": obj.EventType,
 		"eventId": obj.EventId,
 		"eventSource": obj.EventSource,
-		"workflowData": obj.WorkflowData,
+		"data": obj.Data,
 	}
 	for name, el := range elements {
 		if isZero := IsZeroValue(el); isZero {

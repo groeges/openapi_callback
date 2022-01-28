@@ -15,7 +15,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -44,7 +46,7 @@ func (s *DefaultApiService) Callback(ctx context.Context, inlineObject InlineObj
 	done := make(chan bool)
 
 	go func() {
-		sendEvent(done, inlineObject.EventId, inlineObject.CallbackUrl)
+		sendEvent(done, inlineObject, strconv.FormatBool(RandBool()))
 	}()
 
 	//TODO: Uncomment the next line to return response Response(201, {}) or use other options such as http.Ok ...
@@ -53,31 +55,36 @@ func (s *DefaultApiService) Callback(ctx context.Context, inlineObject InlineObj
 	//return Response(http.StatusNotImplemented, nil), errors.New("CallbackPost method not implemented")
 }
 
-func sendEvent(done chan<- bool, eventId string, callbackURL string) (okay bool) {
+func RandBool() bool {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(2) == 1
+}
+
+func sendEvent(done chan<- bool, inlineObject InlineObject, approval string) (okay bool) {
 	defer func() {
 		done <- okay
 	}()
 
-	fmt.Println(fmt.Sprintf("%s: Sending an event after 20 seconds", eventId))
+	fmt.Println(fmt.Sprintf("%s: Sending an event after 20 seconds", inlineObject.EventId))
 
 	time.Sleep(20 * time.Second)
 
-	values := map[string]string{"move": "true", "message": fmt.Sprintf("Remote process has completed for eventId: %s", eventId)}
+	values := map[string]string{"approve": approval, "message": fmt.Sprintf("Remote process has completed for eventId: %s", inlineObject.EventId)}
 	json_data, err := json.Marshal(values)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	req, err := http.NewRequest("POST", callbackURL, bytes.NewBuffer(json_data))
+	req, err := http.NewRequest("POST", inlineObject.CallbackUrl, bytes.NewBuffer(json_data))
 
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("ce-specversion", "1.0")
 	req.Header.Add("ce-source", "pm")
-	req.Header.Add("ce-type", "move")
+	req.Header.Add("ce-type", inlineObject.EventType)
 	req.Header.Add("ce-id", "random")
-	req.Header.Add("ce-kogitoprocrefid", eventId)
-	req.Header.Add("ce-workflowdata", "{}")
+	req.Header.Add("ce-kogitoprocrefid", inlineObject.EventId)
+	//req.Header.Add("ce-workflowdata", "{}")
 	resp, err := http.DefaultClient.Do(req)
 
 	fmt.Println(fmt.Sprintf("Response from request is: %d", resp.StatusCode))
