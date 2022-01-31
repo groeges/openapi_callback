@@ -20,8 +20,6 @@ paths:
                   example: https://myserver.com/send/callback/here
                 eventType:
                   type: string
-                processId:
-                  type: string
                 eventSource:
                   type: string
                 data:
@@ -29,7 +27,6 @@ paths:
               required:
                 - callbackUrl
                 - eventType
-                - processId
                 - eventSource
       responses:
         '201':

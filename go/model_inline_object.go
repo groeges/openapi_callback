@@ -15,8 +15,6 @@ type InlineObject struct {
 
 	EventType string `json:"eventType"`
 
-	EventId string `json:"eventId"`
-
 	EventSource string `json:"eventSource"`
 
 	Data map[string]interface{} `json:"data"`
@@ -27,7 +25,6 @@ func AssertInlineObjectRequired(obj InlineObject) error {
 	elements := map[string]interface{}{
 		"callbackUrl": obj.CallbackUrl,
 		"eventType": obj.EventType,
-		"eventId": obj.EventId,
 		"eventSource": obj.EventSource,
 		"data": obj.Data,
 	}

@@ -33,7 +33,7 @@ func NewDefaultApiService() DefaultApiServicer {
 }
 
 // Callback - Subscribe to a webhook
-func (s *DefaultApiService) Callback(ctx context.Context, inlineObject InlineObject) (ImplResponse, error) {
+func (s *DefaultApiService) Callback(ctx context.Context, procinstid string, inlineObject InlineObject) (ImplResponse, error) {
 	// TODO - update CallbackPost with the required logic for this service method.
 	// Add api_default_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 	out, err := json.Marshal(inlineObject)
@@ -46,7 +46,7 @@ func (s *DefaultApiService) Callback(ctx context.Context, inlineObject InlineObj
 	done := make(chan bool)
 
 	go func() {
-		sendEvent(done, inlineObject, strconv.FormatBool(RandBool()))
+		sendEvent(done, procinstid, inlineObject, strconv.FormatBool(RandBool()))
 	}()
 
 	//TODO: Uncomment the next line to return response Response(201, {}) or use other options such as http.Ok ...
@@ -60,16 +60,16 @@ func RandBool() bool {
 	return rand.Intn(2) == 1
 }
 
-func sendEvent(done chan<- bool, inlineObject InlineObject, approval string) (okay bool) {
+func sendEvent(done chan<- bool, procinstid string, inlineObject InlineObject, approval string) (okay bool) {
 	defer func() {
 		done <- okay
 	}()
 
-	fmt.Println(fmt.Sprintf("%s: Sending an event after 20 seconds", inlineObject.EventId))
+	fmt.Println(fmt.Sprintf("%s: Sending an event after 20 seconds", procinstid))
 
 	time.Sleep(20 * time.Second)
 
-	values := map[string]string{"approve": approval, "message": fmt.Sprintf("Remote process has completed for eventId: %s", inlineObject.EventId)}
+	values := map[string]string{"approve": approval, "message": fmt.Sprintf("Remote process has completed for eventId: %s", procinstid)}
 	json_data, err := json.Marshal(values)
 
 	if err != nil {
@@ -83,7 +83,7 @@ func sendEvent(done chan<- bool, inlineObject InlineObject, approval string) (ok
 	req.Header.Add("ce-source", "pm")
 	req.Header.Add("ce-type", inlineObject.EventType)
 	req.Header.Add("ce-id", "random")
-	req.Header.Add("ce-kogitoprocrefid", inlineObject.EventId)
+	req.Header.Add("ce-kogitoprocrefid", procinstid)
 	//req.Header.Add("ce-workflowdata", "{}")
 	resp, err := http.DefaultClient.Do(req)
 

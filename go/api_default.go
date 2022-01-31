@@ -70,7 +70,9 @@ func (c *DefaultApiController) Callback(w http.ResponseWriter, r *http.Request) 
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	result, err := c.service.Callback(r.Context(), inlineObjectParam)
+
+	procinstid := r.Header.Get("kogitoprocinstanceid")
+	result, err := c.service.Callback(r.Context(), procinstid, inlineObjectParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
