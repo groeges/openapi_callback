@@ -10,12 +10,7 @@
 package openapi
 
 type InlineObject struct {
-
 	CallbackUrl string `json:"callbackUrl"`
-
-	EventType string `json:"eventType"`
-
-	EventSource string `json:"eventSource"`
 
 	Data map[string]interface{} `json:"data"`
 }
@@ -24,9 +19,7 @@ type InlineObject struct {
 func AssertInlineObjectRequired(obj InlineObject) error {
 	elements := map[string]interface{}{
 		"callbackUrl": obj.CallbackUrl,
-		"eventType": obj.EventType,
-		"eventSource": obj.EventSource,
-		"data": obj.Data,
+		"data":        obj.Data,
 	}
 	for name, el := range elements {
 		if isZero := IsZeroValue(el); isZero {
