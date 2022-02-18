@@ -79,12 +79,6 @@ func sendEvent(done chan<- bool, procinstid string, inlineObject InlineObject, a
 	req, err := http.NewRequest("POST", inlineObject.CallbackUrl, bytes.NewBuffer(json_data))
 
 	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("ce-specversion", "1.0")
-	req.Header.Add("ce-source", "pm")
-	req.Header.Add("ce-type", inlineObject.EventType)
-	req.Header.Add("ce-id", "random")
-	req.Header.Add("ce-kogitoprocrefid", procinstid)
-	//req.Header.Add("ce-workflowdata", "{}")
 	resp, err := http.DefaultClient.Do(req)
 
 	fmt.Println(fmt.Sprintf("Response from request is: %d", resp.StatusCode))
