@@ -18,10 +18,6 @@ paths:
                   type: string
                   format: uri
                   example: https://myserver.com/send/callback/here
-                eventType:
-                  type: string
-                eventSource:
-                  type: string
                 data:
                   type: object
               required:
@@ -45,28 +41,4 @@ paths:
               responses:   # Expected responses to the callback message
                 '200':
                   description: Your server returns this code if it accepts the callback
-                  headers:
-                    ce-kogitoprocrefid:
-                      schema:
-                        type: string
-                      description: The processId for the workflow process.
-                    ce-specversion:
-                      schema:
-                        type: string
-                        example: "1.0"
-                      description: The version of the cloud event specification being used
-                    ce-source:
-                      schema: 
-                        type: string
-                        example: "pm"
-                      description: The source of the cloud event - as passed in the request body as `eventSource`
-                    ce-type:
-                      schema: 
-                        type: string
-                        example: "move"
-                      description: The type of the cloud event  - as passed in the request body as `eventType`
-                    ce-id:
-                      schema: 
-                        type: string
-                        example: "random"
-                      description: The id for this cloud event 
+ 
